@@ -32,7 +32,8 @@ Mock.mock('/api/s_goods', (req, res) => {
             'id|+1' : 1,//自增
             'date' : '@DATETIME("yyyy-MM-dd")',
             'name':'@TITLE(1)',
-            'address':'@TITLE(1)'
+            'address':'@TITLE(1)',
+            'num|+1' : 1,//自增
         }]
 	})
 	return{
@@ -51,6 +52,23 @@ Mock.mock('/api/repassword', (req, res) => {
 	}else{
 		return {
         	'message':false
+    	}
+	}
+})
+Mock.mock('/api/stock', (req, res) => {
+	let message = JSON.parse(req.body);
+	let token = message.token;
+	var messages = Mock.mock({
+  		'message|8-10': [{
+  			'id|+1' : 1,//自增
+            'name':'@TITLE(1)',
+            'num|+1' : 1,//自增
+        }]
+	})
+	if(token=='asdasfghh')
+	{
+		return {
+        	'message':messages
     	}
 	}
 })
