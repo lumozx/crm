@@ -108,7 +108,7 @@ export default {
   },
   mounted(){
     this.token = sessionStorage.getItem('token');
-    this.f_goods()
+    this.f_goods()//开始就获取订单数据
   },
   methods:{
     handleCurrentChange(val) {
@@ -119,12 +119,13 @@ export default {
       this.tableData = r.data.table.list;
       this.beiDate = [...r.data.table.list];//完全复制，消除指针，用于复制
       this.all=r.data.table.list.length;
-      this.beiall=r.data.table.list.length;
+      this.beiall=r.data.table.list.length;//数据条数和数据都备份，用于查找之后进行还原
       })
     },
+    //排序
     sort_change(column, prop, order){
       if(column.column){
-          this.tableData = this.tableData.sort(this.compare(column.prop,column.order))
+          this.tableData = this.tableData.sort(this.compare(column.prop,column.order))//根据条件，进行排序
       }else{
         this.tableData = this.tableData.sort(this.compare('id','ascending'))//默认id升序
       }
@@ -152,25 +153,26 @@ export default {
         }
       }
     },
+    //检索
     doFilter() {
+      this.tableData = [...this.beiDate];//用备份数据还原列表,实现初始化
       if (this.tableDataName == "") {
-        this.tableData = [...this.beiDate];//完全复制，消除指针
-        this.all = this.beiall;
+        this.all = this.beiall;//如果搜索值为空，那么用备份页数还原页数
         return;
       }
-      this.tableData = [...this.beiDate];//变换搜索条件的时候，要更新数据
-      this.filterTableDataEnd=[];
+      this.filterTableDataEnd=[];//搜索结果为空
       this.tableData.forEach((value, index) => {
         for(let p in value){
-          if(value[p].toString().toUpperCase().indexOf(this.tableDataName.toUpperCase())>=0){//大小写模糊查询
+          if(value[p].toString().toUpperCase().indexOf(this.tableDataName.toUpperCase())>=0){//大小写转为字符串，进行模糊查询
             this.filterTableDataEnd.push(value);
-            break;//防止多次检索同一条
+            break;//防止多次检索同一条信息
           }
         }
       });
       this.tableData = [...this.filterTableDataEnd];
-      this.all = this.filterTableDataEnd.length;
+      this.all = this.filterTableDataEnd.length;//显示走索结果
     },
+    //添加
     add(){
       this.dialogFormVisible = true;
       this.form.name ='';
@@ -179,14 +181,14 @@ export default {
       this.max = 999;
       this.form.date1 = '';//清理上次数据
       this.$http.post('/api/stock',{token:this.token}).then((r)=>{
-        this.stock = r.data.message.message;
+        this.stock = r.data.message.message;//绑定新数据
       })
     },
     change_select(v){
       this.stock.forEach((value, index) => {
         if(value['id']==v){
           this.num1 = value['num'];
-          this.max = value['num'];
+          this.max = value['num'];//select变化的时候，数量与最大值都变
           return;
         }
       });
@@ -198,9 +200,10 @@ export default {
       }else{
         this.$message.success('添加成功');
       }
-      this.dialogFormVisible = false;
-      this.f_goods()
+      this.dialogFormVisible = false;//隐藏弹框
+      this.f_goods()//刷新数据
     },
+    //删除数据
     handleDelete(id){
       this.$confirm('此操作将删除此数据, 是否继续?', '提示', {
         confirmButtonText: '确定',
