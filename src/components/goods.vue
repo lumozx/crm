@@ -86,25 +86,23 @@ export default {
         date: '',
         name: '',
         address: '',
-
-
-      };
+    };
     return {
       tableData: Array(1).fill(item),
-     // tableData:'',
-     thistotal:15,//每页条数
-     currentPage:1,//默认起始页
-     all:15,//总条数
-     tableDataName:'',
-     max:999,
-     num1:0,//新增订单货物剩余数量
-     dialogFormVisible: false,
+      // tableData:'',
+      thistotal:15,//每页条数
+      currentPage:1,//默认起始页
+      all:15,//总条数
+      tableDataName:'',
+      max:999,
+      num1:0,//新增订单货物剩余数量
+      dialogFormVisible: false,
         form: {
           name: '',//新增订单姓名
           good: '',//新增订单货物名称
           date1: '',
         },
-        formLabelWidth: '120px',
+      formLabelWidth: '120px',
       stock : []
     }
   },
@@ -113,121 +111,114 @@ export default {
     this.f_goods()
   },
   methods:{
-      handleCurrentChange(val) {
-        this.currentPage  = val;
-
-      },
-      f_goods(){
-         this.$http.post('/api/s_goods').then((r)=>{
-       this.tableData = r.data.table.list;
-       this.beiDate = [...r.data.table.list];//完全复制，消除指针，用于复制
-        this.all=r.data.table.list.length;
-        this.beiall=r.data.table.list.length;
-     })
-      },
-      sort_change(column, prop, order){
-        if(column.column){
+    handleCurrentChange(val) {
+      this.currentPage  = val;
+    },
+    f_goods(){
+      this.$http.post('/api/s_goods').then((r)=>{
+      this.tableData = r.data.table.list;
+      this.beiDate = [...r.data.table.list];//完全复制，消除指针，用于复制
+      this.all=r.data.table.list.length;
+      this.beiall=r.data.table.list.length;
+      })
+    },
+    sort_change(column, prop, order){
+      if(column.column){
           this.tableData = this.tableData.sort(this.compare(column.prop,column.order))
-        }else{
-          this.tableData = this.tableData.sort(this.compare('id','ascending'))//默认id升序
-
-        }
-      },
-      compare(property,order){
-        if(property=='id'){
-         return function(obj1,obj2){
-            var value1 = obj1[property];
-            var value2 = obj2[property];
-            if(order=='ascending'){
+      }else{
+        this.tableData = this.tableData.sort(this.compare('id','ascending'))//默认id升序
+      }
+    },
+    compare(property,order){
+      if(property=='id'){
+        return function(obj1,obj2){
+          var value1 = obj1[property];
+          var value2 = obj2[property];
+          if(order=='ascending'){
             return value1 - value2;     // 升序
           }else if(order=='descending'){
             return value2 - value1;     //倒序
           }
-         }
-        }else if(property == 'date'){
-          return function(obj1,obj2){
-            var value1 = Date.parse(obj1[property]);
-            var value2 = Date.parse(obj2[property]);
-            if(order=='ascending'){
+        }
+      }else if(property == 'date'){
+        return function(obj1,obj2){
+          var value1 = Date.parse(obj1[property]);
+          var value2 = Date.parse(obj2[property]);
+          if(order=='ascending'){
             return value1 - value2;     // 升序
           }else if(order=='descending'){
             return value2 - value1;     //倒序
           }
-         }
         }
+      }
     },
     doFilter() {
-  if (this.tableDataName == "") {
-   this.tableData = [...this.beiDate];//完全复制，消除指针
-   this.all = this.beiall;
-  return;
-  }
-  this.tableData = [...this.beiDate];//变换搜索条件的时候，要更新数据
-  this.filterTableDataEnd=[];
-  this.tableData.forEach((value, index) => {
-    for(let p in value){
-   if(value[p].toString().toUpperCase().indexOf(this.tableDataName.toUpperCase())>=0){//大小写模糊查询
-   this.filterTableDataEnd.push(value);
-   break;//防止多次检索同一条
-   }
-    }
-  });
-this.tableData = [...this.filterTableDataEnd];
-this.all = this.filterTableDataEnd.length;
- },
- add(){
-  this.dialogFormVisible = true;
-  this.form.name ='';
-  this.form.good = '';
-  this.num1 = 0;
-  this.max = 999;
-  this.form.date1 = '';//清理上次数据
-  this.$http.post('/api/stock',{token:this.token}).then((r)=>{
-    this.stock = r.data.message.message;
-  })
- },
- change_select(v){
-    this.stock.forEach((value, index) => {
-   if(value['id']==v){
-    this.num1 = value['num'];
-   this.max = value['num'];
-   return;
-    }
-  });
- },
- add_go(){
-  
-  if(this.form.name ==''||this.form.good == ''||this.form.date1 ==''){
-          this.$message.error('请填写必要信息');
+      if (this.tableDataName == "") {
+        this.tableData = [...this.beiDate];//完全复制，消除指针
+        this.all = this.beiall;
+        return;
+      }
+      this.tableData = [...this.beiDate];//变换搜索条件的时候，要更新数据
+      this.filterTableDataEnd=[];
+      this.tableData.forEach((value, index) => {
+        for(let p in value){
+          if(value[p].toString().toUpperCase().indexOf(this.tableDataName.toUpperCase())>=0){//大小写模糊查询
+            this.filterTableDataEnd.push(value);
+            break;//防止多次检索同一条
+          }
+        }
+      });
+      this.tableData = [...this.filterTableDataEnd];
+      this.all = this.filterTableDataEnd.length;
+    },
+    add(){
+      this.dialogFormVisible = true;
+      this.form.name ='';
+      this.form.good = '';
+      this.num1 = 0;
+      this.max = 999;
+      this.form.date1 = '';//清理上次数据
+      this.$http.post('/api/stock',{token:this.token}).then((r)=>{
+        this.stock = r.data.message.message;
+      })
+    },
+    change_select(v){
+      this.stock.forEach((value, index) => {
+        if(value['id']==v){
+          this.num1 = value['num'];
+          this.max = value['num'];
           return;
-  }else{
-    this.$message.success('添加成功');
-  }
-  this.dialogFormVisible = false;
-  this.f_goods()
-
- },
- handleDelete(id){
-this.$confirm('此操作将删除此数据, 是否继续?', '提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'warning'
-        }).then(() => {
-          this.$message({
-            type: 'success',
-            message: '删除成功!'
-          });
-        }).catch(() => {
-          this.$message({
-            type: 'info',
-            message: '已取消删除'
-          });          
+        }
+      });
+    },
+    add_go(){ 
+      if(this.form.name ==''||this.form.good == ''||this.form.date1 ==''){
+        this.$message.error('请填写必要信息');
+        return;
+      }else{
+        this.$message.success('添加成功');
+      }
+      this.dialogFormVisible = false;
+      this.f_goods()
+    },
+    handleDelete(id){
+      this.$confirm('此操作将删除此数据, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        this.$message({
+        type: 'success',
+        message: '删除成功!'
         });
- }
-
+      }).catch(() => {
+        this.$message({
+        type: 'info',
+        message: '已取消删除'
+        });          
+      });
+    }
   },
- 
-
 }
 </script>
 
