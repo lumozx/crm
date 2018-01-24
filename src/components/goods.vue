@@ -59,6 +59,11 @@
         </el-table-column>
         <el-table-column prop="address" label="地址">
         </el-table-column>
+        <el-table-column label="操作">
+      <template scope="scope">
+        <el-button size="small" type="danger" @click="handleDelete(scope.row.id)">删除</el-button>
+      </template>
+    </el-table-column>
       </el-table>
     <el-pagination
       @current-change="handleCurrentChange"
@@ -201,6 +206,23 @@ this.all = this.filterTableDataEnd.length;
   this.dialogFormVisible = false;
   this.f_goods()
 
+ },
+ handleDelete(id){
+this.$confirm('此操作将删除此数据, 是否继续?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          this.$message({
+            type: 'success',
+            message: '删除成功!'
+          });
+        }).catch(() => {
+          this.$message({
+            type: 'info',
+            message: '已取消删除'
+          });          
+        });
  }
 
   },
