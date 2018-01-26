@@ -27,7 +27,8 @@
 
   <el-form-item label="货品名称">
     <el-select v-model="form.good" placeholder="请选择货品名称" @change="change_select">
-      <el-option v-for="s in stock" :label="s.name" :value="s.id"></el-option>
+      <el-option v-for="(s,index) in stock" :label="s.name" :value="s.id" :key="index"></el-option>
+    <!-- v-for无论如何也要绑定key -->
     </el-select>
   </el-form-item>
     <el-form-item label="数量" style="width: 400px">
@@ -60,7 +61,8 @@
         <el-table-column prop="address" label="地址">
         </el-table-column>
         <el-table-column label="操作">
-      <template scope="scope">
+      <template slot-scope="scope">
+        <!-- scope早被弃用,slot-scope代替 -->
         <el-button size="small" type="danger" @click="handleDelete(scope.row.id)">删除</el-button>
       </template>
     </el-table-column>
@@ -210,6 +212,7 @@ export default {
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
+        console.log(id)
         this.$message({
         type: 'success',
         message: '删除成功!'

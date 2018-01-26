@@ -17,10 +17,10 @@ export default new Router({
     },
     {
       path: '/main',
-      name: 'mainobject',
+      // name: 'mainobject',有默认路由，父路由不需要name
       component: Mainobject,
       meta: {
-		requireAuth: true,  // 添加该字段，表示进入这个路由是需要登录的
+		    requireAuth: true,  // 添加该字段，表示进入这个路由是需要登录的
       },
       children:[
       {
