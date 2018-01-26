@@ -2,6 +2,7 @@
 
   
   <el-container>
+
     <el-main>
 
 
@@ -50,7 +51,7 @@
 
 <!-- dialog -->
       <el-table :data="tableData.slice((currentPage-1)*thistotal,currentPage*thistotal)" @sort-change="sort_change">
-        <el-table-column sortable="custom" prop="id" label="ID" width="140">
+        <el-table-column  sortable="custom" prop="id" label="ID" width="140">
         </el-table-column>
         <el-table-column sortable="custom" prop="date" label="日期" width="140">
         </el-table-column>

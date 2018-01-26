@@ -72,3 +72,33 @@ Mock.mock('/api/stock', (req, res) => {
     	}
 	}
 })
+Mock.mock('/api/bei', (req, res) => {
+	let message = JSON.parse(req.body);
+	let token = message.token;
+	var messages = Mock.mock({
+  		'message|8-10': [{
+  			'id|+1' : 1,//自增
+            'name':'@TITLE(1)',
+            'date' : '@DATETIME("yyyy-MM-dd")',
+        }]
+	})
+	if(token=='asdasfghh')
+	{
+		return {
+        	'message':messages
+    	}
+	}
+})
+Mock.mock('/api/go', (req, res) => {
+	let message = JSON.parse(req.body);
+	let token = message.token;
+	if(token=='asdasfghh'){
+		return {
+        	'message':true
+    	}
+	}else{
+		return {
+        	'message':false
+    	}
+	}
+})

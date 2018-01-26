@@ -58,7 +58,8 @@
           <i class="fa fa-cog" aria-hidden="true"></i>
           <span>系统设置</span>
         </template>
-          <el-menu-item index="9-1">数据库备份</el-menu-item>
+         <router-link :to="{ name: 'bei'}">
+          <el-menu-item index="9-1">数据库备份</el-menu-item></router-link>
             <router-link :to="{ name: 'repassword'}">
           <el-menu-item index="9-2">密码修改</el-menu-item></router-link>
           <el-menu-item index="9-3">日志</el-menu-item>

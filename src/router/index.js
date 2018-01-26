@@ -5,6 +5,7 @@ import Mainobject from '@/components/mainobject'
 import S_goods from '@/components/goods'
 import A_goods from '@/components/a_goods'
 import Repassword from '@/components/repassword'
+import Bei from '@/components/bei'
 
 Vue.use(Router)
 
@@ -38,6 +39,11 @@ export default new Router({
         path: 'repassword',
       	name: 'repassword',
       	component: Repassword,
+      },
+      {
+        path: 'bei',
+        name: 'bei',
+        component: Bei,
       }]
     },
   ]
