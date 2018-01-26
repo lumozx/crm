@@ -26,79 +26,66 @@ export default {
   name: 'login',
   data () {
     return {
-        formLabelAlign: {
-          username: '',
-          password: '',
-          type: ''
-        },
+      formLabelAlign: {
+        username: '',
+        password: '',
+        type: ''
+      },
     }
   },
   mounted(){
-if(sessionStorage.getItem("token")){
-  this.$router.push({ name: 's_goods'})
-}
-
-this.createCode()
+    if(sessionStorage.getItem("token")){
+      this.$router.push({ name: 's_goods'})
+    }
+    this.createCode()
   },
   methods:{
-createCode() {
-             this.code = "";
-            var codeLength = 6; //验证码的长度
-            var checkCode = document.getElementById("checkCode");
-            var codeChars = new Array(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 
-            'a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z',
-            'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'); //所有候选组成验证码的字符，当然也可以用中文的
-            for (var i = 0; i < codeLength; i++) 
-            {
-                var charNum = Math.floor(Math.random() * 52);
-                this.code += codeChars[charNum];
-            }
-            if (checkCode) 
-            {
-                checkCode.className = "code";
-                checkCode.innerHTML = this.code;
-            }
-        },
- validateCode() 
-        {
-
-            // var inputCode = document.getElementById("inputCode").value;
-            if (this.formLabelAlign.type.length <= 0) 
-            {
-                // alert("请输入验证码！");
-                this.$alert("请输入验证码！",{
-                confirmButtonText: '确定',
-            });
-            }
-            else if (this.formLabelAlign.type.toUpperCase() != this.code.toUpperCase()) 
-            {
-                
-                this.$alert("验证码输入有误！",{
-                confirmButtonText: '确定',
-            });
-                this.createCode();
-            }
-            else if(this.formLabelAlign.username==''||this.formLabelAlign.password=='')
-            {
-                
-                this.$alert("用户名或密码不能为空！",{
-                confirmButtonText: '确定',
-            });
-            }else{
-                  this.$http.post('/api/login',{username:this.formLabelAlign.username,password:this.formLabelAlign.password}).then((r)=> {
-                  if(!r.data){
-                    
-                    this.$alert("账号密码错误！",{
-                confirmButtonText: '确定',
-            });
-                  }else{
-                    sessionStorage.setItem("token", r.data.token); 
-                    // alert('登录成功')
-                    this.$router.push({ name: 's_goods'})
-                  }
-    });
-            }        
-        }    
+    createCode() {
+      this.code = "";
+      var codeLength = 6; //验证码的长度
+      var checkCode = document.getElementById("checkCode");
+      var codeChars = new Array(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 
+      'a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z',
+      'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'); //所有候选组成验证码的字符，当然也可以用中文的
+      for (var i = 0; i < codeLength; i++){
+        var charNum = Math.floor(Math.random() * 52);
+        this.code += codeChars[charNum];
+      }
+      if (checkCode) 
+      {
+        checkCode.className = "code";
+        checkCode.innerHTML = this.code;
+      }
+    },
+    validateCode(){
+     if (this.formLabelAlign.type.length <= 0){
+        this.$alert("请输入验证码！",{
+        confirmButtonText: '确定',
+        });
+     }
+     else if (this.formLabelAlign.type.toUpperCase() != this.code.toUpperCase()){
+        this.$alert("验证码输入有误！",{
+        confirmButtonText: '确定',
+        });
+        this.createCode();
+     }
+     else if(this.formLabelAlign.username==''||this.formLabelAlign.password==''){
+        this.$alert("用户名或密码不能为空！",{
+        confirmButtonText: '确定',
+        });
+     }else{
+        this.$http.post('/api/login',{username:this.formLabelAlign.username,password:this.formLabelAlign.password}).then((r)=> {
+        if(!r.data){
+          this.$alert("账号密码错误！",{
+          confirmButtonText: '确定',
+        });
+        }else{
+          sessionStorage.setItem("token", r.data.token); 
+          this.$router.push({ name: 's_goods'})
+          }
+        });
+      }        
+    }    
   }
 }
 </script>
