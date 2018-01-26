@@ -1,6 +1,6 @@
 <template>
   <div class="hello">
-    <img src="../assets/logo.png">
+    <div id="logo"><img src="../assets/logo.png"></div>
 <div style="margin: 20px;"></div>
 <el-form   label-width="80px" :model="formLabelAlign">
   <el-form-item label="用户名">
@@ -110,34 +110,32 @@ createCode() {
   margin: 0 auto;
 
 }
-    .code
-    {
-        
-            font-family:Arial;
-            font-style:italic;
-             color:blue;
-             font-size:30px;
-             border:0;
-             padding:2px 3px;
-             letter-spacing:3px;
-             font-weight:bolder;                        
-             cursor:pointer;
-             width:150px;
-             line-height:40px;
-             text-align:center;
-               display: inline-block;
+.code{
+  font-family:Arial;
+  ont-style:italic;
+  color:blue;
+  font-size:30px;
+  border:0;
+  padding:2px 3px;
+  letter-spacing:3px;
+  font-weight:bolder;                        
+  cursor:pointer;
+  width:150px;
+  line-height:40px;
+  text-align:center;
+  display: inline-block;
   height: 40px;
   vertical-align: top
-
-    }
-    a
-    {
-        text-decoration:none;
-        font-size:12px;
-        color:#288bc4;
-        }
-    a:hover
-    {
-       text-decoration:underline;
-        }
+}
+a{
+  text-decoration:none;
+  font-size:12px;
+  color:#288bc4;
+}
+a:hover{
+  text-decoration:underline;
+}
+#logo{
+  text-align: center
+}
 </style>
