@@ -32,7 +32,7 @@
       </template>
     </el-table-column>
   </el-table>
-  <el-dialog title="备份中。。" :visible.sync="dialogTableVisible">
+  <el-dialog title="操作中。。" :visible.sync="dialogTableVisible">
 <el-progress :text-inside="true" :stroke-width="18" :percentage="num" :status="status"></el-progress>
 </el-dialog>
 </el-main>
@@ -83,8 +83,6 @@ export default {
         }
       },100)
       this.$http.post('/api/go',{token:this.token}).then((r)=>{
-        // this.tableData = r.data.message.message;
-        // this.num =100;
         if(r.data.message ==true){
           clearInterval(s);
           this.num =100;
@@ -92,24 +90,23 @@ export default {
           //备份成功暂停计时器，跳100%，关闭进度条，状态为成功
           this.$alert("备份成功",{
             confirmButtonText: '确定',
-          }).then(()=>{
-            this.dialogTableVisible = false;
-            this.find_bei();//重新获取数据
-          });
+            callback:action =>{
+              this.dialogTableVisible = false;
+              this.find_bei();
+            }
+          })
          
         }else{
           clearInterval(s);
           this.status="exception";
           this.$alert("备份失败",{
             confirmButtonText: '确定',
-          }).then(()=>{
-            this.dialogTableVisible = false;
-            this.find_bei();
-          });
-          //备份失败暂停计时器，状态为失败，关闭进度条，并弹窗
-          
+            callback:action =>{
+              this.dialogTableVisible = false;
+              this.find_bei();
+            }
+          })
         }
-
       })
     }
   }
