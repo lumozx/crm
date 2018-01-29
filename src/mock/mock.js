@@ -102,3 +102,29 @@ Mock.mock('/api/go', (req, res) => {
     	}
 	}
 })
+Mock.mock('/api/back', (req, res) => {
+	let message = JSON.parse(req.body);
+	let token = message.token;
+	if(token=='asdasfghh'){
+		return {
+        	'message':true
+    	}
+	}else{
+		return {
+        	'message':false
+    	}
+	}
+})
+Mock.mock('/api/delete', (req, res) => {
+	let message = JSON.parse(req.body);
+	let token = message.token;
+	if(token=='asdasfghh'){
+		return {
+        	'message':true
+    	}
+	}else{
+		return {
+        	'message':false
+    	}
+	}
+})
