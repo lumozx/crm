@@ -67,10 +67,76 @@ export default {
       })
     },
     handleEdit(index, row) {
-      console.log(index, row);
+      this.$confirm('此操作将还原数据库, 是否继续?', '警告', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+        }).then(() => {
+          this.dialogTableVisible = true;
+          var s = null;
+          clearInterval(s);
+          var s =setInterval(()=>{
+            this.num = this.num+1;
+            if(this.num>=99){
+              clearInterval(s);
+            }
+          },100)
+          this.$http.post('/api/back',{token:this.token,id:row.id}).then((r)=>{
+            if(r.data.message ==true){
+              clearInterval(s);
+              this.num =100;
+              this.status="success";
+              this.$alert("还原成功",{
+                confirmButtonText: '确定',
+                callback:action =>{
+                  this.dialogTableVisible = false;
+                  this.find_bei();
+                }
+              })         
+            }else{
+              clearInterval(s);
+              this.status="exception";
+              this.$alert("还原失败",{
+                confirmButtonText: '确定',
+                callback:action =>{
+                  this.dialogTableVisible = false;
+                  this.find_bei();
+                }
+              })
+            }
+          })
+        }).catch(() => {
+          this.$message({
+            type: 'info',
+            message: '已取消还原'
+          });          
+        });      
     },
     handleDelete(index, row) {
-      console.log(index, row);
+      this.$confirm('此操作将永久删除该备份文件, 是否继续?', '警告', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        this.$http.post('/api/delete',{token:this.token,id:row.id}).then((r)=>{
+          if(r.data.message ==true){
+            this.$message({
+              type: 'success',
+              message: '删除成功!'
+            });
+          }else{
+            this.$message({
+              type: 'warning',
+              message: '删除失败!'
+            });
+          }
+        })   
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '已取消删除'
+        });          
+      });
     },
     bf(){
       this.dialogTableVisible = true;
